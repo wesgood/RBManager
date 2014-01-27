@@ -9,6 +9,14 @@ RBManager provides a wrapper for the different ROS functionality calls:
 * [Publishers](#publishers)
 * [Service Calls](#service-calls)
 
+Prerequisites
+=========
+
+* [Socket Rocket websockets library](https://github.com/square/SocketRocket)
+* iOS 7 SDK
+* Xcode 5
+* The iPhone simulator works, but if you want to use a device, you'll also need to be a member of the iOS developer program
+
 Implementation
 =========
 
