@@ -11,15 +11,4 @@
 @implementation VectorMessage
 @synthesize x, y, z;
 
--(NSDictionary*)publish {
-    NSMutableDictionary * data = [[NSMutableDictionary alloc] init];
-    [self addObject:self.x withKey:@"x" toDictionary:data];
-    [self addObject:self.y withKey:@"y" toDictionary:data];
-    [self addObject:self.z withKey:@"z" toDictionary:data];
-    return data;
-}
-
--(NSString*)getMessageType {
-    return @"geometry_msgs/Vector3";
-}
 @end

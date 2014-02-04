@@ -11,21 +11,9 @@
 @implementation TwistMessage
 @synthesize linear, angular;
 
--(void)create {
+-(void)setDefaults {
     self.linear = [[VectorMessage alloc] init];
     self.angular = [[VectorMessage alloc] init];
-}
-
--(NSDictionary*)publish {
-    NSDictionary * data = [[NSDictionary alloc] initWithObjectsAndKeys:
-                           [self.linear publish], @"linear",
-                           [self.angular publish], @"angular",
-                           nil];
-    return data;
-}
-
--(NSString*)getMessageType {
-    return @"geometry_msgs/Twist";
 }
 
 @end
