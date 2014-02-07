@@ -11,7 +11,7 @@
 #import "RBMessage.h"
 
 @implementation RBServiceCall
-@synthesize service, manager, args, compression, fragmentSize, serviceId, response, responseClass, serviceObject, serviceSelector;
+@synthesize service, manager, args, compression, fragmentSize, serviceId, response, messageClass, serviceObject, serviceSelector, label, result;
 
 -(void)send {
     NSMutableDictionary * data = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
@@ -33,13 +33,8 @@
 }
 
 -(void)receive:(id)data {
-    if (self.responseClass) {
-        RBMessage * message = [[self.responseClass alloc] init];
-        [message process:data];
-        self.response = message;
-    } else {
-        self.response = data;
-    }
+    self.result = [[data objectForKey:@"result"] boolValue];
+    self.response = [data objectForKey:@"values"];
 }
 
 -(void)setMessage:(RBMessage*)message {

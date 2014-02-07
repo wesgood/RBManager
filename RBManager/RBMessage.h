@@ -10,19 +10,17 @@
 
 @interface RBMessage : NSObject {
     NSDate * publishDate;
-    NSString * messageType;
 }
 
 @property (nonatomic, strong) NSDate * publishDate;
-@property (nonatomic, strong) NSString * messageType;
 
 -(void)process:(NSDictionary*)messageData;
--(NSDictionary*)publish;
+
 -(void)load;
--(void)create;
--(void)addObject:(id)object withKey:(NSString*)key toDictionary:(NSMutableDictionary*)dictionary;
+-(void)setDefaults;
+
+-(NSDictionary*)publish;
 
 -(NSArray*)propertyKeys;
--(NSString*)getMessageType;
 
 @end

@@ -10,7 +10,4 @@
 
 @implementation EmptyMessage
 
--(NSString*)getMessageType {
-    return @"std_srvs/Empty";
-}
 @end

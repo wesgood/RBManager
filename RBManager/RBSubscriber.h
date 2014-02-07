@@ -27,6 +27,8 @@
     NSInteger queueLength;
     NSInteger fragmentSize;
     NSString * compression;
+    
+    NSString * label;
 }
 
 @property (nonatomic, strong) RBManager * manager;
@@ -35,6 +37,7 @@
 @property (nonatomic, strong) NSString * messageType;
 @property (nonatomic, strong) NSString * subscriberId;
 @property (nonatomic, strong) NSString * topicType;
+@property (nonatomic, strong) NSString * label;
 @property NSInteger throttleRate;
 @property NSInteger queueLength;
 @property NSInteger fragmentSize;

@@ -11,7 +11,7 @@
 #import "RBMessage.h"
 
 @implementation RBPublisher
-@synthesize manager, topic, messageType, publisherId, active;
+@synthesize manager, topic, messageType, publisherId, active, label;
 
 -(void)publish:(RBMessage*)message {
     NSDictionary * messageData = [message publish];

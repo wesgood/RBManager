@@ -3,6 +3,10 @@ RBManager
 
 An Objective-C library for ROSBridge that uses WebSockets to communicate with [Robot Operating System](http://www.ros.org) (ROS).
 
+For a more detailed example than this reference document, please read my blog post: 
+
+http://www.wesg.ca/2014/02/rbmanager-an-ios-library-for-robot-operating-system-and-rosbridge/
+
 RBManager provides a wrapper for the different ROS functionality calls:
 
 * [Subscribers](#subscribers)

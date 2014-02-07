@@ -10,13 +10,12 @@
 #import <objc/runtime.h>
 
 @implementation RBMessage
-@synthesize publishDate, messageType;
+@synthesize publishDate;
 
 -(id)init {
     self = [super init];
     if (self) {
-        [self create];
-        self.messageType = [self getMessageType];
+        [self setDefaults];
     }
     return self;
 }
@@ -41,13 +40,8 @@
 -(void)load {
     // override when the message is populated
 }
--(void)create {
-    // create messages that in this message
-}
--(void)addObject:(id)object withKey:(NSString*)key toDictionary:(NSMutableDictionary*)dictionary {
-    // check for null values before loading
-    if (object)
-        [dictionary setObject:object forKey:key];
+-(void)setDefaults {
+    // assign default values to certain properties
 }
 
 /* usually overridden */
@@ -59,8 +53,8 @@
         id object = [self valueForKey:key];
         if ([object isKindOfClass:[RBMessage class]])
             [data setObject:[(RBMessage*)object publish] forKey:key];
-        else
-            [self addObject:object withKey:key toDictionary:data];
+        else if (object)
+            [data setObject:object forKey:key];
     }
     return data;
 }
@@ -82,9 +76,5 @@
     free(properties);
     
     return rv;
-}
-
--(NSString*)getMessageType {
-    return nil;
 }
 @end

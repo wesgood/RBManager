@@ -11,7 +11,7 @@
 #import "RBMessage.h"
 
 @implementation RBSubscriber
-@synthesize messageClass, topic, subscriberObject, subscriberSelector, manager, messageType, subscriberId, active, fragmentSize, compression, queueLength, throttleRate, topicType;
+@synthesize messageClass, topic, subscriberObject, subscriberSelector, manager, messageType, subscriberId, active, fragmentSize, compression, queueLength, throttleRate, topicType, label;
 
 -(void)subscribe {
     NSMutableDictionary * data = [[NSMutableDictionary alloc] initWithObjectsAndKeys:

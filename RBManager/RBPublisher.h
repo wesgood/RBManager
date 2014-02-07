@@ -17,12 +17,15 @@
     NSString * publisherId;
     
     BOOL active;
+    
+    NSString * label;
 }
 
 @property (nonatomic, strong) RBManager * manager;
 @property (nonatomic, strong) NSString * topic;
 @property (nonatomic, strong) NSString * messageType;
 @property (nonatomic, strong) NSString * publisherId;
+@property (nonatomic, strong) NSString * label;
 @property BOOL active;
 
 -(void)publish:(RBMessage*)message;

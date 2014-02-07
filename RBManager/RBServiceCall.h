@@ -17,11 +17,14 @@
     id args;
     NSInteger fragmentSize;
     NSString * compression;
-    id response;
+    NSDictionary * response;
+    BOOL result;
     
     SEL serviceSelector;
     id serviceObject;
-    Class responseClass;
+    Class messageClass;
+    
+    NSString * label;
 }
 
 @property (nonatomic, strong) RBManager * manager;
@@ -30,10 +33,12 @@
 @property (nonatomic, strong) id args;
 @property NSInteger fragmentSize;
 @property (nonatomic, strong) NSString * compression;
-@property (nonatomic, strong) id response;
+@property (nonatomic, strong) NSDictionary * response;
 @property (nonatomic) SEL serviceSelector;
 @property (nonatomic, strong) id serviceObject;
-@property (nonatomic, assign) Class responseClass;
+@property (nonatomic, assign) Class messageClass;
+@property (nonatomic, strong) NSString * label;
+@property BOOL result;
 
 
 /*!

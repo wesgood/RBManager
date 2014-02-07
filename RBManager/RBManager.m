@@ -49,12 +49,14 @@ static RBManager * sharedInstance;
     return subscriber;
 }
 
--(RBPublisher*)addPublisher:(NSString*)topic messageType:(NSString*)messageType {
+-(RBPublisher*)addPublisher:(NSString*)topic messageType:(NSString*)message {
     RBPublisher * publisher = [[RBPublisher alloc] init];
     publisher.manager = self;
     publisher.topic = topic;
-    publisher.messageType = messageType;
     publisher.active = YES;
+    
+    // get the message type from the object
+    publisher.messageType = message;
     
     [self.publishers addObject:publisher];
     return publisher;
@@ -70,7 +72,7 @@ static RBManager * sharedInstance;
     return serviceCall;
 }
 
--(RBServiceCall*)setParam:(NSString*)name value:(NSString*)value {
+-(RBServiceCall*)setParam:(NSString*)name value:(id)value {
     RBServiceCall * serviceCall = [[RBServiceCall alloc] init];
     serviceCall.manager = self;
     serviceCall.service = @"/rosapi/set_param";
@@ -160,9 +162,9 @@ static RBManager * sharedInstance;
 }
 
 -(void)postServiceCallResponse:(NSDictionary *)data {
-    NSArray * values = [data objectForKey:@"values"];
     if (self.lastServiceCall) {
-        [self.lastServiceCall receive:values];
+        [self.lastServiceCall receive:data];
+        
         if ([self.lastServiceCall.serviceObject respondsToSelector:self.lastServiceCall.serviceSelector]) {
             [self.lastServiceCall.serviceObject performSelectorOnMainThread:self.lastServiceCall.serviceSelector withObject:self.lastServiceCall waitUntilDone:YES];
         }
@@ -171,13 +173,15 @@ static RBManager * sharedInstance;
 
 -(void)advertisePublishers {
     for (RBPublisher * publisher in self.publishers) {
-        [publisher advertise];
+        if (publisher.active)
+            [publisher advertise];
     }
 }
 
 -(void)attachSubscribers {
     for (RBSubscriber * subscriber in self.subscribers) {
-        [subscriber subscribe];
+        if (subscriber.active)
+            [subscriber subscribe];
     }
 }
 
