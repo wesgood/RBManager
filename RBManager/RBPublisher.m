@@ -34,6 +34,7 @@
  * Provides default advertising of topic without a message ID
  */
 -(void)advertise {
+    self.active = YES;
     NSMutableDictionary * data = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                   @"advertise", @"op",
                                   self.messageType, @"type",
@@ -46,6 +47,7 @@
 }
 
 -(void)unadvertise {
+    self.active = NO;
     NSMutableDictionary * data = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                   @"unadvertise", @"op",
                                   self.topic, @"topic",

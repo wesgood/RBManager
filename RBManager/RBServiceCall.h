@@ -45,7 +45,15 @@
  * Send a service call to ROSBridge
  */
 -(void)send;
+/*!
+ * Process a return message from ROS
+ * \param data the dictionary or array data to process
+ */
 -(void)receive:(id)data;
+/*!
+ * Set a message to be sent with the service call
+ * \param message the ROS message object to include
+ */
 -(void)setMessage:(RBMessage*)message;
 
 @end

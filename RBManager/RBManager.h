@@ -38,6 +38,8 @@
     id<RBManagerDelegate> delegate;
     
     BOOL connected;
+    NSTimer * timeoutTimer;
+    NSInteger timeout;
     
     RBMessage * lastPublishedMessage;
     RBMessage * lastReceivedMessage;
@@ -53,6 +55,8 @@
 @property (nonatomic, strong) RBMessage * lastPublishedMessage;
 @property (nonatomic, strong) RBMessage * lastReceivedMessage;
 @property (nonatomic, strong) RBServiceCall * lastServiceCall;
+@property (nonatomic, strong) NSTimer * timeoutTimer;
+@property NSInteger timeout;
 @property BOOL connected;
 
 +(RBManager*)defaultManager;
@@ -75,7 +79,7 @@
  * \param messageClass the class of the ROS message to populate
  * \returns A new RBSubscriber object
  */
--(RBSubscriber*)addSubscriber:(id)subscriberObject selector:(SEL)subscriberSelector name:(NSString*)topic messageClass:(Class)messageClass;
+-(RBSubscriber*)addSubscriber:(NSString*)topic responseTarget:(id)subscriberObject selector:(SEL)subscriberSelector messageClass:(Class)messageClass;
 /*!
  * Create a new publisher object to send messages to ROS
  * \param topic the ROS topic to publish to
@@ -90,7 +94,7 @@
  * \param service the ROS service that receives the request
  * \returns A new RBServiceCall object
  */
--(RBServiceCall*)makeServiceCall:(id)serviceCallObject selector:(SEL)serviceSelector name:(NSString*)service;
+-(RBServiceCall*)makeServiceCall:(NSString*)service responseTarget:(id)serviceCallObject selector:(SEL)serviceSelector;
 /*!
  * Creates a new service call object preset to set a particular ROS parameter
  * \param name the name of the ROS parameter to update
@@ -105,7 +109,7 @@
  * \param responseSelector the method that will receive the callback data
  * \returns A new RBServiceCall object
  */
--(RBServiceCall*)getParam:(NSString*)name object:(id)object selector:(SEL)responseSelector;
+-(RBServiceCall*)getParam:(NSString*)name responseTarget:(id)object selector:(SEL)responseSelector;
 
 /*!
  * Add a previously made RBSubscriber object to the manager
@@ -133,6 +137,7 @@
 -(void)postSubscriberData:(NSDictionary*)data;
 -(void)advertisePublishers;
 -(void)attachSubscribers;
+-(void)didTimeout;
 /*!
  * Use the web socket to send data to ROS
  * \param data The data to send
@@ -143,6 +148,7 @@
 @protocol RBManagerDelegate <NSObject>
 @optional
 -(void)managerDidConnect:(RBManager*)manager;
+-(void)managerDidTimeout:(RBManager*)manager;
 -(void)manager:(RBManager*)manager didFailWithError:(NSError*)error;
 -(void)manager:(RBManager*)manager didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean;
 

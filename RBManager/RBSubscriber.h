@@ -46,6 +46,12 @@
 @property (nonatomic, strong) id subscriberObject;
 @property BOOL active;
 
+/*!
+ * Subscribe this object to ROS
+ */
 -(void)subscribe;
+/*!
+ * Unsubscribe this object from ROS
+ */
 -(void)unsubscribe;
 @end

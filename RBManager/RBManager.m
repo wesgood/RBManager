@@ -15,7 +15,7 @@
 static RBManager * sharedInstance;
 
 @implementation RBManager
-@synthesize subscribers, publishers, host, socket, delegate, connected, queue, lastReceivedMessage, lastPublishedMessage, lastServiceCall;
+@synthesize subscribers, publishers, host, socket, delegate, connected, queue, lastReceivedMessage, lastPublishedMessage, lastServiceCall, timeout, timeoutTimer;
 
 +(void) initialize {
     sharedInstance = [[RBManager alloc] init];
@@ -31,12 +31,13 @@ static RBManager * sharedInstance;
         self.subscribers = [[NSMutableArray alloc] init];
         self.publishers = [[NSMutableArray alloc] init];
         self.queue = [[NSMutableArray alloc] init];
-        connected = NO;
+        self.connected = NO;
+        self.timeout = 5;
     }
     return self;
 }
 
--(RBSubscriber*)addSubscriber:(id)subscriberObject selector:(SEL)subscriberSelector name:(NSString*)topic messageClass:(Class)messageClass {
+-(RBSubscriber*)addSubscriber:(NSString*)topic responseTarget:(id)subscriberObject selector:(SEL)subscriberSelector messageClass:(Class)messageClass {
     RBSubscriber * subscriber = [[RBSubscriber alloc] init];
     subscriber.manager = self;
     subscriber.subscriberObject = subscriberObject;
@@ -62,7 +63,7 @@ static RBManager * sharedInstance;
     return publisher;
 }
 
--(RBServiceCall*)makeServiceCall:(id)serviceCallObject selector:(SEL)serviceSelector name:(NSString*)service {
+-(RBServiceCall*)makeServiceCall:(NSString*)service responseTarget:(id)serviceCallObject selector:(SEL)serviceSelector {
     RBServiceCall * serviceCall = [[RBServiceCall alloc] init];
     serviceCall.manager = self;
     serviceCall.service = service;
@@ -81,7 +82,7 @@ static RBManager * sharedInstance;
     return serviceCall;
 }
 
--(RBServiceCall*)getParam:(NSString*)name object:(id)object selector:(SEL)responseSelector {
+-(RBServiceCall*)getParam:(NSString*)name responseTarget:(id)object selector:(SEL)responseSelector {
     RBServiceCall * serviceCall = [[RBServiceCall alloc] init];
     serviceCall.manager = self;
     serviceCall.service = @"/rosapi/get_param";
@@ -92,30 +93,33 @@ static RBManager * sharedInstance;
 }
 
 -(void)addExistingSubscriber:(RBSubscriber*)subscriber {
-    subscriber.active = YES;
     [subscriber subscribe];
 }
 -(void)addExistingPublisher:(RBPublisher*)publisher {
-    publisher.active = YES;
     [publisher advertise];
 }
 
 -(void)removeSubscriber:(RBSubscriber *)subscriber {
-    subscriber.active = NO;
     [subscriber unsubscribe];
 }
 
 -(void)removePublisher:(RBPublisher*)publisher {
-    publisher.active = NO;
     [publisher unadvertise];
 }
 
 -(void)connect:(NSString *)socketHost {
     if (self.connected || self.socket) {
     #ifdef DEBUG
-        NSLog(@"Socket already connected");
+        NSLog(@"Socket already open");
     #endif
     } else {
+#ifdef DEBUG
+        NSLog(@"connecting -- %@", socketHost);
+#endif
+        
+        // set the timeout timer
+        timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:self.timeout target:self selector:@selector(didTimeout) userInfo:nil repeats:NO];
+        
         // open the socket and can't change host while connected
         self.host = socketHost;
         NSURLRequest * request = [NSURLRequest requestWithURL:[NSURL URLWithString:socketHost]];
@@ -123,6 +127,19 @@ static RBManager * sharedInstance;
         self.socket.delegate = self;
         [self.socket open];
     }
+}
+
+-(void)didTimeout {
+#ifdef DEBUG
+    NSLog(@"timeout");
+#endif
+    
+    self.connected = NO;
+    self.socket = nil;
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"rbmanager/timeout" object:nil];
+    if ([self.delegate respondsToSelector:@selector(managerDidTimeout:)])
+        [self.delegate managerDidTimeout:self];
 }
 
 -(void)disconnect {
@@ -209,7 +226,7 @@ static RBManager * sharedInstance;
 
 -(void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean {
 #ifdef DEBUG
-    NSLog(@"Socket closed -- %@ -- Code %ld -- %@", [webSocket.url description], code, reason);
+    NSLog(@"Socket closed -- %@ -- Code %d -- %@", [webSocket.url description], code, reason);
 #endif
     self.connected = NO;
     self.socket = nil;
@@ -233,6 +250,9 @@ static RBManager * sharedInstance;
 #ifdef DEBUG
     NSLog(@"Socket open -- %@", [webSocket.url description]);
 #endif
+    
+    [self.timeoutTimer invalidate];
+    self.timeoutTimer = nil;
     
     self.connected = YES;
     [self advertisePublishers];

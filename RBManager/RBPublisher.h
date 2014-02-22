@@ -28,7 +28,17 @@
 @property (nonatomic, strong) NSString * label;
 @property BOOL active;
 
+/*!
+ * Send a message object to ROS
+ * \param message the ROS message object
+ */
 -(void)publish:(RBMessage*)message;
+/*!
+ * Advertise this publisher with ROS
+ */
 -(void)advertise;
+/*!
+ * Unadvertise this publisher from ROS
+ */
 -(void)unadvertise;
 @end

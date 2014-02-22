@@ -14,6 +14,7 @@
 @synthesize messageClass, topic, subscriberObject, subscriberSelector, manager, messageType, subscriberId, active, fragmentSize, compression, queueLength, throttleRate, topicType, label;
 
 -(void)subscribe {
+    self.active = YES;
     NSMutableDictionary * data = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                   @"subscribe", @"op",
                                   self.topic, @"topic",
@@ -35,6 +36,7 @@
 }
 
 -(void)unsubscribe {
+    self.active = NO;
     NSMutableDictionary * data = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                   @"unsubscribe", @"op",
                                   self.topic, @"topic",
