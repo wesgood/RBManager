@@ -37,11 +37,11 @@
         case info:
             return nil;
         case warn:
-            return [UIColor colorWithRed:1.000 green:0.803 blue:0.000 alpha:1.000];
+            return [UIColor colorWithRed:196/255.0f green:160/255.0f blue:7/255.0f alpha:1.000];
         case error:
-            return [UIColor colorWithRed:1.000 green:0.589 blue:0.000 alpha:1.000];
+            return [UIColor colorWithRed:170/255.0f green:6/255.0f blue:32/255.0f alpha:1.000];
         case fatal:
-            return [UIColor colorWithRed:1.000 green:0.208 blue:0.000 alpha:1.000];
+            return [UIColor colorWithRed:189/255.0f green:0.000 blue:0.000 alpha:1.000];
     }
 }
 @end
