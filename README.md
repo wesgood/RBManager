@@ -51,19 +51,19 @@ Subscribers
 
 Subscriber objects are created by calling
 ```
--(RBSubscriber*)addSubscriber:(id)subscriberObject selector:(SEL)subscriberSelector name:(NSString*)topic messageClass:(Class)messageClass
+-(RBSubscriber*)addSubscriber:(NSString*)topic responseTarget:(id)subscriberObject selector:(SEL)subscriberSelector messageClass:(Class)messageClass;
 ```
 
-* subscriberObject -- object that receives the result
+* topic -- ROS topic to subscribe to
+* responseObject -- object that receives the result
 * subscriberSelector -- the method called when the result is received
-* name -- ROS topic to subscribe to
 * messageClass -- the RBMessage compatible class that will be returned
 
 Subscribers respond to the same properties as the [ROSBridge protocol specification](https://github.com/RobotWebTools/rosbridge_suite/blob/groovy-devel/ROSBRIDGE_PROTOCOL.md).
 
 Example:
 ```
-[[RBManager defaultManager] addSubscriber:self selector:@selector(poseMessageReceived:) name:@"/turtlesim/pose" messageClass:[PoseMessage class]]
+[[RBManager defaultManager] addSubscriber:@"/turtlesim/pose" responseObject:self selector:@selector(poseMessageReceived:) messageClass:[PoseMessage class]]
 ```
 
 All subscribers are automatically subscribed to when a connection is opened. To un/subscribe directly, call `[subscriber subscribe]` or `[subscriber unsubscribe]`.
