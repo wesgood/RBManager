@@ -1,6 +1,8 @@
 RBManager
 =========
 
+NOTE: Obviously this project has now become out of date due to using Objective-C. I have learned a great deal about development since I made this so I hope to rebuild it in Swift 3+. If you are interested in a Swift version, please email me at w [at] wesg [dot] ca so I can gauge interest.
+
 An Objective-C library for ROSBridge that uses WebSockets to communicate with [Robot Operating System](http://www.ros.org) (ROS).
 
 For a more detailed example than this reference document, please read my blog post: 
@@ -119,3 +121,29 @@ Feedback
 
 Please keep in mind that this library is very new. I'll be testing it regularly, particularly against the turtle sim. Create an issue in github or email me directly -- w [at] wesg [dot] ca
 
+License
+=========
+I'm more interested in seeing what people can do with this library than restricting it for personal gain. If you use the library in a commercial or otherwise non-personal-education project, please send me a link to check it out. Oh and if you can, include a link to this page in the software you build, or at least the name of the library.
+
+
+MIT License
+
+Copyright (c) 2017 Wes Goodhoofd
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
